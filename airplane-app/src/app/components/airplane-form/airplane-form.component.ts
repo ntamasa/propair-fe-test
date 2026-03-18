@@ -1,11 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, input, output, OnInit, booleanAttribute } from '@angular/core';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AirplaneService } from '../../services/airplane.service';
+import { MatSelectModule } from '@angular/material/select';
+import { AirplaneFormValue } from '../../models/airplane-form-value.model';
 import { AirplaneStatus } from '../../models/airplane.model';
 import { integerValidator } from '../../validators/integer.validator';
 
@@ -13,18 +13,27 @@ import { integerValidator } from '../../validators/integer.validator';
   selector: 'app-airplane-form',
   imports: [
     ReactiveFormsModule,
-    RouterLink,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
   ],
   templateUrl: './airplane-form.component.html',
 })
-export class AirplaneFormComponent {
+export class AirplaneFormComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly airplaneService = inject(AirplaneService);
-  private readonly router = inject(Router);
+
+  readonly initialValue = input<Partial<AirplaneFormValue>>();
+  readonly submitLabel = input<string>('Save');
+  readonly loading = input<boolean>(false);
+  readonly error = input<string | null>(null);
+  readonly showStatus = input(false, { transform: booleanAttribute });
+
+  readonly formSubmit = output<AirplaneFormValue>();
+  readonly cancelled = output<void>();
+
+  protected readonly statusOptions: AirplaneStatus[] = ['active', 'maintenance'];
 
   protected readonly form = this.fb.group({
     tailNumber: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
@@ -33,47 +42,23 @@ export class AirplaneFormComponent {
     capacity: [0, [Validators.required, Validators.min(1), Validators.max(999), integerValidator]],
     maintenanceIntervalFlights: [100, [Validators.required, Validators.min(1), integerValidator]],
     flightsSinceLastMaintenance: [0, [Validators.required, Validators.min(0), integerValidator]],
+    status: ['active' as AirplaneStatus],
   });
 
-  protected readonly loading = signal<boolean>(false);
-  protected readonly error = signal<string | null>(null);
+  ngOnInit(): void {
+    const initial = this.initialValue();
+    if (initial) this.form.patchValue(initial);
+  }
 
-  protected async onSubmit(): Promise<void> {
+  protected onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+    this.formSubmit.emit(this.form.getRawValue() as AirplaneFormValue);
+  }
 
-    const {
-      tailNumber,
-      model,
-      manufacturer,
-      capacity,
-      maintenanceIntervalFlights,
-      flightsSinceLastMaintenance,
-    } = this.form.getRawValue();
-
-    const status: AirplaneStatus =
-      flightsSinceLastMaintenance >= maintenanceIntervalFlights ? 'maintenance' : 'active';
-
-    this.loading.set(true);
-    this.error.set(null);
-
-    try {
-      const created = await this.airplaneService.create({
-        tailNumber,
-        model,
-        manufacturer,
-        capacity,
-        maintenanceIntervalFlights,
-        flightsSinceLastMaintenance,
-        status,
-      });
-      this.router.navigate(['/airplanes', created.id]);
-    } catch {
-      this.error.set('Failed to create airplane. Please try again.');
-    } finally {
-      this.loading.set(false);
-    }
+  protected onCancel(): void {
+    this.cancelled.emit();
   }
 }

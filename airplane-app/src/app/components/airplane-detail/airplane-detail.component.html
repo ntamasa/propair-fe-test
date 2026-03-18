@@ -15,13 +15,19 @@
     </div>
   } @else if (airplane()) {
     <div class="rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-        <h1 class="text-xl font-medium text-gray-800">
-          {{ airplane()!.tailNumber | tailNumber }}
-        </h1>
-        <p class="text-sm text-gray-500 mt-0.5">
-          {{ airplane()!.manufacturer }} · {{ airplane()!.model }}
-        </p>
+      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-start justify-between">
+        <div>
+          <h1 class="text-xl font-medium text-gray-800">
+            {{ airplane()!.tailNumber | tailNumber }}
+          </h1>
+          <p class="text-sm text-gray-500 mt-0.5">
+            {{ airplane()!.manufacturer }} · {{ airplane()!.model }}
+          </p>
+        </div>
+        <a [routerLink]="['/airplanes', airplane()!.id, 'edit']" mat-stroked-button>
+          <mat-icon>edit</mat-icon>
+          Edit
+        </a>
       </div>
 
       <dl class="divide-y divide-gray-100">

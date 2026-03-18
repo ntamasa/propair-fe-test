@@ -1,0 +1,29 @@
+<div class="p-6 max-w-2xl mx-auto">
+  <a [routerLink]="['/airplanes', id]" mat-button class="mb-4">
+    <mat-icon>arrow_back</mat-icon>
+    Back to detail
+  </a>
+
+  <h1 class="text-2xl font-medium text-gray-800 mb-6">Edit airplane</h1>
+
+  @if (loading()) {
+    <div class="flex justify-center py-16">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (loadError()) {
+    <div class="flex flex-col items-center py-16 gap-3 text-gray-400">
+      <mat-icon class="text-4xl w-auto h-auto">error_outline</mat-icon>
+      <p class="text-sm">{{ loadError() }}</p>
+    </div>
+  } @else {
+    <app-airplane-form
+      submitLabel="Save changes"
+      [initialValue]="initialValue()"
+      [loading]="saving()"
+      [error]="saveError()"
+      (formSubmit)="onFormSubmit($event)"
+      (cancelled)="onCancel()"
+      showStatus
+    />
+  }
+</div>
