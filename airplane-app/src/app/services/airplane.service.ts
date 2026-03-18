@@ -1,57 +1,36 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { Airplane } from '../models/airplane.model';
+import { API_BASE } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AirplaneService {
-  private readonly _airplanes = signal<Airplane[]>([
-    {
-      id: '1',
-      tailNumber: 'N12345',
-      model: '737-800',
-      manufacturer: 'Boeing',
-      capacity: 189,
-      status: 'active',
-      maintenanceIntervalFlights: 100,
-      flightsSinceLastMaintenance: 45,
-    },
-    {
-      id: '2',
-      tailNumber: 'N67890',
-      model: 'A320',
-      manufacturer: 'Airbus',
-      capacity: 180,
-      status: 'active',
-      maintenanceIntervalFlights: 100,
-      flightsSinceLastMaintenance: 92,
-    },
-    {
-      id: '3',
-      tailNumber: 'N11111',
-      model: '787-9',
-      manufacturer: 'Boeing',
-      capacity: 296,
-      status: 'maintenance',
-      maintenanceIntervalFlights: 100,
-      flightsSinceLastMaintenance: 100,
-    },
-  ]);
+  private readonly http = inject(HttpClient);
 
-  getAirplanes(): Airplane[] {
-    return this._airplanes();
+  async getAll(): Promise<Airplane[]> {
+    return firstValueFrom(this.http.get<Airplane[]>(`${API_BASE}/airplanes`));
   }
 
-  getById(id: string): Airplane | undefined {
-    return this._airplanes().find((a) => a.id === id);
+  async getById(id: string): Promise<Airplane> {
+    return firstValueFrom(this.http.get<Airplane>(`${API_BASE}/airplanes/${id}`));
   }
 
-  updateAirplane(updated: Airplane): void {
-    this._airplanes.update((list) => list.map((a) => (a.id === updated.id ? updated : a)));
+  async create(airplane: Omit<Airplane, 'id'>): Promise<Airplane> {
+    return firstValueFrom(this.http.post<Airplane>(`${API_BASE}/airplanes`, airplane));
   }
 
-  addAirplane(airplane: Omit<Airplane, 'id'>): Airplane {
-    const id = String(Date.now());
-    const newAirplane: Airplane = { id, ...airplane };
-    this._airplanes.update((list) => [...list, newAirplane]);
-    return newAirplane;
+  async update(id: string, changes: Partial<Omit<Airplane, 'id'>>): Promise<Airplane> {
+    return firstValueFrom(this.http.put<Airplane>(`${API_BASE}/airplanes/${id}`, changes));
+  }
+
+  async incrementFlights(id: string): Promise<Airplane> {
+    return firstValueFrom(
+      this.http.post<Airplane>(`${API_BASE}/airplanes/${id}/increment-flights`, {}),
+    );
+  }
+
+  async delete(id: string): Promise<void> {
+    return firstValueFrom(this.http.delete<void>(`${API_BASE}/airplanes/${id}`));
   }
 }

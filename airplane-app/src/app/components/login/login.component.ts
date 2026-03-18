@@ -32,7 +32,7 @@ export class LoginComponent {
   protected readonly loading = signal<boolean>(false);
   protected readonly passwordVisible = signal<boolean>(false);
 
-  protected onSubmit(): void {
+  protected async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -43,16 +43,15 @@ export class LoginComponent {
 
     const { email, password } = this.form.getRawValue();
 
-    this.authService.login({ email, password }).subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.router.navigate(['/airplanes']);
-      },
-      error: () => {
-        this.loading.set(false);
-        this.error.set('Invalid email or password. Please try again.');
-      },
-    });
+    try {
+      const response = await this.authService.login({ email, password });
+      this.authService.setSession(response);
+      this.router.navigate(['/airplanes']);
+    } catch {
+      this.error.set('Invalid email or password. Please try again.');
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   protected togglePassword(): void {

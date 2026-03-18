@@ -1,7 +1,7 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { AuthUser, LoginRequest, LoginResponse } from '../models/auth.model';
 
 export const TOKEN_KEY = 'auth_token';
@@ -21,8 +21,8 @@ export class AuthService {
   );
   readonly isLoggedIn = computed(() => this.token() !== null);
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${API_BASE}/auth/login`, credentials);
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    return firstValueFrom(this.http.post<LoginResponse>(`${API_BASE}/auth/login`, credentials));
   }
 
   setSession(response: LoginResponse): void {

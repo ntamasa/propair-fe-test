@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,7 +35,10 @@ export class AirplaneFormComponent {
     flightsSinceLastMaintenance: [0, [Validators.required, Validators.min(0), integerValidator]],
   });
 
-  protected onSubmit(): void {
+  protected readonly loading = signal<boolean>(false);
+  protected readonly error = signal<string | null>(null);
+
+  protected async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -53,16 +56,24 @@ export class AirplaneFormComponent {
     const status: AirplaneStatus =
       flightsSinceLastMaintenance >= maintenanceIntervalFlights ? 'maintenance' : 'active';
 
-    const created = this.airplaneService.addAirplane({
-      tailNumber,
-      model,
-      manufacturer,
-      capacity,
-      maintenanceIntervalFlights,
-      flightsSinceLastMaintenance,
-      status,
-    });
+    this.loading.set(true);
+    this.error.set(null);
 
-    this.router.navigate(['/airplanes', created.id]);
+    try {
+      const created = await this.airplaneService.create({
+        tailNumber,
+        model,
+        manufacturer,
+        capacity,
+        maintenanceIntervalFlights,
+        flightsSinceLastMaintenance,
+        status,
+      });
+      this.router.navigate(['/airplanes', created.id]);
+    } catch {
+      this.error.set('Failed to create airplane. Please try again.');
+    } finally {
+      this.loading.set(false);
+    }
   }
 }

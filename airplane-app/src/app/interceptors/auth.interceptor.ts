@@ -1,4 +1,10 @@
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
+import {
+  HttpInterceptorFn,
+  HttpRequest,
+  HttpHandlerFn,
+  HttpEvent,
+  HttpResponse,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { AuthService, TOKEN_KEY, USER_KEY } from '../services/auth.service';
@@ -17,7 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (
     tap({
       next: (event) => {
         if (
-          'body' in event &&
+          event instanceof HttpResponse &&
           event.body &&
           typeof event.body === 'object' &&
           'token' in event.body
@@ -27,12 +33,6 @@ export const authInterceptor: HttpInterceptorFn = (
             localStorage.setItem(TOKEN_KEY, body.token);
             localStorage.setItem(USER_KEY, JSON.stringify(body.user));
           }
-        }
-      },
-      error: () => {
-        if (!authService.token()) {
-          localStorage.removeItem(TOKEN_KEY);
-          localStorage.removeItem(USER_KEY);
         }
       },
     }),

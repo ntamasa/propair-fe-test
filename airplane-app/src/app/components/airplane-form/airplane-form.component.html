@@ -74,8 +74,17 @@
     </mat-form-field>
 
     <div class="flex justify-end gap-3 mt-2">
+      @if (error()) {
+        <p class="text-sm text-red-500 self-center mr-auto">{{ error() }}</p>
+      }
       <a routerLink="/airplanes" mat-stroked-button>Cancel</a>
-      <button type="submit" mat-flat-button [disabled]="form.invalid">Add airplane</button>
+      <button type="submit" mat-flat-button [disabled]="form.invalid || loading()">
+        @if (loading()) {
+          Saving…
+        } @else {
+          Add airplane
+        }
+      </button>
     </div>
   </form>
 </div>

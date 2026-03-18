@@ -7,39 +7,54 @@
     </a>
   </div>
 
-  <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-    <table class="w-full text-sm text-left text-gray-700">
-      <thead class="bg-gray-50 text-xs uppercase text-gray-500 tracking-wider">
-        <tr>
-          <th class="px-6 py-3">Tail Number</th>
-          <th class="px-6 py-3">Model</th>
-          <th class="px-6 py-3">Manufacturer</th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (airplanes.length === 0) {
+  @if (loading()) {
+    <div class="flex justify-center py-16">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (error()) {
+    <div class="flex flex-col items-center py-16 gap-4 text-gray-400">
+      <mat-icon class="text-4xl w-auto h-auto">error_outline</mat-icon>
+      <p class="text-sm">{{ error() }}</p>
+      <button mat-stroked-button (click)="loadAirplanes()">
+        <mat-icon>refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+  } @else {
+    <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+      <table class="w-full text-sm text-left text-gray-700">
+        <thead class="bg-gray-50 text-xs uppercase text-gray-500 tracking-wider">
           <tr>
-            <td colspan="3" class="px-6 py-10 text-center text-gray-400">No airplanes found.</td>
+            <th class="px-6 py-3">Tail Number</th>
+            <th class="px-6 py-3">Model</th>
+            <th class="px-6 py-3">Manufacturer</th>
           </tr>
-        }
-        @for (airplane of airplanes; track airplane.id) {
-          <tr
-            [routerLink]="['/airplanes', airplane.id]"
-            [ngClass]="
-              airplane.status === 'maintenance'
-                ? 'bg-amber-50 text-amber-800 hover:bg-amber-100'
-                : 'hover:bg-gray-50 text-gray-700'
-            "
-            class="border-t border-gray-100 transition-colors cursor-pointer"
-          >
-            <td class="px-6 py-4 font-mono font-medium text-gray-800">
-              {{ airplane.tailNumber | tailNumber }}
-            </td>
-            <td class="px-6 py-4">{{ airplane.model }}</td>
-            <td class="px-6 py-4">{{ airplane.manufacturer }}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          @if (airplanes().length === 0) {
+            <tr>
+              <td colspan="3" class="px-6 py-10 text-center text-gray-400">No airplanes found.</td>
+            </tr>
+          }
+          @for (airplane of airplanes(); track airplane.id) {
+            <tr
+              [routerLink]="['/airplanes', airplane.id]"
+              [ngClass]="
+                airplane.status === 'maintenance'
+                  ? 'bg-amber-50 text-amber-800 hover:bg-amber-100'
+                  : 'hover:bg-gray-50 text-gray-700'
+              "
+              class="border-t border-gray-100 transition-colors cursor-pointer"
+            >
+              <td class="px-6 py-4 font-mono font-medium">
+                {{ airplane.tailNumber | tailNumber }}
+              </td>
+              <td class="px-6 py-4">{{ airplane.model }}</td>
+              <td class="px-6 py-4">{{ airplane.manufacturer }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
 </div>
