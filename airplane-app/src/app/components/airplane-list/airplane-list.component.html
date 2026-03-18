@@ -1,0 +1,31 @@
+<div class="p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-medium text-gray-800 mb-6">Airplanes</h1>
+
+  <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+    <table class="w-full text-sm text-left text-gray-700">
+      <thead class="bg-gray-50 text-xs uppercase text-gray-500 tracking-wider">
+        <tr>
+          <th class="px-6 py-3">Tail Number</th>
+          <th class="px-6 py-3">Model</th>
+          <th class="px-6 py-3">Manufacturer</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (airplanes.length === 0) {
+          <tr>
+            <td colspan="3" class="px-6 py-10 text-center text-gray-400">No airplanes found.</td>
+          </tr>
+        }
+        @for (airplane of airplanes; track airplane.id) {
+          <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 font-mono font-medium text-gray-800">
+              {{ airplane.tailNumber }}
+            </td>
+            <td class="px-6 py-4">{{ airplane.model }}</td>
+            <td class="px-6 py-4">{{ airplane.manufacturer }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
