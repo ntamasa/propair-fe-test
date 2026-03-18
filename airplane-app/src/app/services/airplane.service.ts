@@ -47,4 +47,11 @@ export class AirplaneService {
   updateAirplane(updated: Airplane): void {
     this._airplanes.update((list) => list.map((a) => (a.id === updated.id ? updated : a)));
   }
+
+  addAirplane(airplane: Omit<Airplane, 'id'>): Airplane {
+    const id = String(Date.now());
+    const newAirplane: Airplane = { id, ...airplane };
+    this._airplanes.update((list) => [...list, newAirplane]);
+    return newAirplane;
+  }
 }

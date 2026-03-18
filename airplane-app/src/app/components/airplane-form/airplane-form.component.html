@@ -1,0 +1,71 @@
+<div class="p-6 max-w-2xl mx-auto">
+  <a routerLink="/airplanes" mat-button class="!mb-4">
+    <mat-icon>arrow_back</mat-icon>
+    Back to list
+  </a>
+
+  <h1 class="text-2xl font-medium text-gray-800 mb-6">Add airplane</h1>
+
+  <form (submit)="onSubmit()" [formGroup]="form" novalidate class="flex flex-col">
+    <mat-form-field>
+      <mat-label>Tail number</mat-label>
+      <input matInput [formControl]="form.controls.tailNumber" />
+      @if (form.controls.tailNumber.hasError('required')) {
+        <mat-error>Required.</mat-error>
+      } @else if (form.controls.tailNumber.hasError('minlength')) {
+        <mat-error>Minimum 3 characters.</mat-error>
+      } @else if (form.controls.tailNumber.hasError('maxlength')) {
+        <mat-error>Maximum 10 characters.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Model</mat-label>
+      <input matInput [formControl]="form.controls.model" />
+      @if (form.controls.model.hasError('required')) {
+        <mat-error>Required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Manufacturer</mat-label>
+      <input matInput [formControl]="form.controls.manufacturer" />
+      @if (form.controls.manufacturer.hasError('required')) {
+        <mat-error>Required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Capacity</mat-label>
+      <input matInput type="number" [formControl]="form.controls.capacity" />
+      @if (form.controls.capacity.hasError('required')) {
+        <mat-error>Required.</mat-error>
+      } @else if (form.controls.capacity.hasError('min')) {
+        <mat-error>Must be at least 1.</mat-error>
+      } @else if (form.controls.capacity.hasError('max')) {
+        <mat-error>Must be 999 or less.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Maintenance interval</mat-label>
+      <input matInput type="number" [formControl]="form.controls.maintenanceIntervalFlights" />
+      @if (form.controls.maintenanceIntervalFlights.hasError('min')) {
+        <mat-error>Must be at least 1.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Flights since last service</mat-label>
+      <input matInput type="number" [formControl]="form.controls.flightsSinceLastMaintenance" />
+      @if (form.controls.flightsSinceLastMaintenance.hasError('min')) {
+        <mat-error>Must be 0 or more.</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="flex justify-end gap-3 mt-2">
+      <a routerLink="/airplanes" mat-stroked-button>Cancel</a>
+      <button type="submit" mat-flat-button>Add airplane</button>
+    </div>
+  </form>
+</div>

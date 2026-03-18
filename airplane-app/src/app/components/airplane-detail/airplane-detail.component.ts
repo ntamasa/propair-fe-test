@@ -1,5 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { AirplaneService } from '../../services/airplane.service';
 import { Airplane } from '../../models/airplane.model';
 import { TailNumberPipe } from '../../pipes/tail-number.pipe';
@@ -7,7 +9,13 @@ import { MaintenanceStatusBarComponent } from '../maintenance-status-bar/mainten
 
 @Component({
   selector: 'app-airplane-detail',
-  imports: [RouterLink, TailNumberPipe, MaintenanceStatusBarComponent],
+  imports: [
+    RouterLink,
+    TailNumberPipe,
+    MaintenanceStatusBarComponent,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './airplane-detail.component.html',
 })
 export class AirplaneDetailComponent implements OnInit {

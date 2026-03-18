@@ -21,11 +21,12 @@
   }
 
   <button
+    mat-stroked-button
     (click)="onAddFlight()"
     [disabled]="status() === 'maintenance'"
-    class="cursor-pointer mt-2 inline-flex items-center gap-1 px-3 py-1.5 text-sm rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+    class="mt-2"
   >
-    <span class="material-icons text-base">flight_takeoff</span>
+    <mat-icon>flight_takeoff</mat-icon>
     Add flight
   </button>
 </div>
