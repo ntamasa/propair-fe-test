@@ -19,7 +19,7 @@
         @for (airplane of airplanes; track airplane.id) {
           <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
             <td class="px-6 py-4 font-mono font-medium text-gray-800">
-              {{ airplane.tailNumber }}
+              {{ airplane.tailNumber | tailNumber }}
             </td>
             <td class="px-6 py-4">{{ airplane.model }}</td>
             <td class="px-6 py-4">{{ airplane.manufacturer }}</td>
