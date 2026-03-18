@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AirplaneService } from '../../services/airplane.service';
 import { AirplaneStatus } from '../../models/airplane.model';
+import { integerValidator } from '../../validators/integer.validator';
 
 @Component({
   selector: 'app-airplane-form',
@@ -29,9 +30,9 @@ export class AirplaneFormComponent {
     tailNumber: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
     model: ['', [Validators.required, Validators.maxLength(50)]],
     manufacturer: ['', [Validators.required, Validators.maxLength(50)]],
-    capacity: [0, [Validators.required, Validators.min(1), Validators.max(999)]],
-    maintenanceIntervalFlights: [100, [Validators.required, Validators.min(1)]],
-    flightsSinceLastMaintenance: [0, [Validators.required, Validators.min(0)]],
+    capacity: [0, [Validators.required, Validators.min(1), Validators.max(999), integerValidator]],
+    maintenanceIntervalFlights: [100, [Validators.required, Validators.min(1), integerValidator]],
+    flightsSinceLastMaintenance: [0, [Validators.required, Validators.min(0), integerValidator]],
   });
 
   protected onSubmit(): void {

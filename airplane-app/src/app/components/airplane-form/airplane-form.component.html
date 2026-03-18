@@ -1,5 +1,5 @@
 <div class="p-6 max-w-2xl mx-auto">
-  <a routerLink="/airplanes" mat-button class="!mb-4">
+  <a routerLink="/airplanes" mat-button class="mb-4">
     <mat-icon>arrow_back</mat-icon>
     Back to list
   </a>
@@ -44,28 +44,38 @@
         <mat-error>Must be at least 1.</mat-error>
       } @else if (form.controls.capacity.hasError('max')) {
         <mat-error>Must be 999 or less.</mat-error>
+      } @else if (form.controls.capacity.hasError('integer')) {
+        <mat-error>Must be a whole number.</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Maintenance interval</mat-label>
       <input matInput type="number" [formControl]="form.controls.maintenanceIntervalFlights" />
-      @if (form.controls.maintenanceIntervalFlights.hasError('min')) {
+      @if (form.controls.maintenanceIntervalFlights.hasError('required')) {
+        <mat-error>Required.</mat-error>
+      } @else if (form.controls.maintenanceIntervalFlights.hasError('min')) {
         <mat-error>Must be at least 1.</mat-error>
+      } @else if (form.controls.maintenanceIntervalFlights.hasError('integer')) {
+        <mat-error>Must be a whole number.</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Flights since last service</mat-label>
       <input matInput type="number" [formControl]="form.controls.flightsSinceLastMaintenance" />
-      @if (form.controls.flightsSinceLastMaintenance.hasError('min')) {
+      @if (form.controls.flightsSinceLastMaintenance.hasError('required')) {
+        <mat-error>Required.</mat-error>
+      } @else if (form.controls.flightsSinceLastMaintenance.hasError('min')) {
         <mat-error>Must be 0 or more.</mat-error>
+      } @else if (form.controls.flightsSinceLastMaintenance.hasError('integer')) {
+        <mat-error>Must be a whole number.</mat-error>
       }
     </mat-form-field>
 
     <div class="flex justify-end gap-3 mt-2">
       <a routerLink="/airplanes" mat-stroked-button>Cancel</a>
-      <button type="submit" mat-flat-button>Add airplane</button>
+      <button type="submit" mat-flat-button [disabled]="form.invalid">Add airplane</button>
     </div>
   </form>
 </div>
