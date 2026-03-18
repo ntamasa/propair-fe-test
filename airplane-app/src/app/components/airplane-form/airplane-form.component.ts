@@ -24,18 +24,18 @@ import { integerValidator } from '../../validators/integer.validator';
 export class AirplaneFormComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  readonly initialValue = input<Partial<AirplaneFormValue>>();
-  readonly submitLabel = input<string>('Save');
-  readonly loading = input<boolean>(false);
-  readonly error = input<string | null>(null);
-  readonly showStatus = input(false, { transform: booleanAttribute });
+  initialValue = input<Partial<AirplaneFormValue>>();
+  submitLabel = input<string>('Save');
+  loading = input<boolean>(false);
+  error = input<string | null>(null);
+  showStatus = input(false, { transform: booleanAttribute });
 
-  readonly formSubmit = output<AirplaneFormValue>();
-  readonly cancelled = output<void>();
+  formSubmit = output<AirplaneFormValue>();
+  cancelled = output<void>();
 
-  protected readonly statusOptions: AirplaneStatus[] = ['active', 'maintenance'];
+  statusOptions: AirplaneStatus[] = ['active', 'maintenance'];
 
-  protected readonly form = this.fb.group({
+  readonly form = this.fb.group({
     tailNumber: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
     model: ['', [Validators.required, Validators.maxLength(50)]],
     manufacturer: ['', [Validators.required, Validators.maxLength(50)]],
@@ -50,7 +50,7 @@ export class AirplaneFormComponent implements OnInit {
     if (initial) this.form.patchValue(initial);
   }
 
-  protected onSubmit(): void {
+  onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -58,7 +58,7 @@ export class AirplaneFormComponent implements OnInit {
     this.formSubmit.emit(this.form.getRawValue() as AirplaneFormValue);
   }
 
-  protected onCancel(): void {
+  onCancel(): void {
     this.cancelled.emit();
   }
 }

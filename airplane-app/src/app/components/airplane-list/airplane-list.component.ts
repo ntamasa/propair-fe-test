@@ -23,15 +23,15 @@ import { Airplane } from '../../models/airplane.model';
 export class AirplaneListComponent implements OnInit {
   private readonly airplaneService = inject(AirplaneService);
 
-  protected readonly airplanes = signal<Airplane[]>([]);
-  protected readonly loading = signal<boolean>(true);
-  protected readonly error = signal<string | null>(null);
+  airplanes = signal<Airplane[]>([]);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
 
   ngOnInit(): void {
     this.loadAirplanes();
   }
 
-  protected async loadAirplanes(): Promise<void> {
+  async loadAirplanes(): Promise<void> {
     this.loading.set(true);
     this.error.set(null);
 

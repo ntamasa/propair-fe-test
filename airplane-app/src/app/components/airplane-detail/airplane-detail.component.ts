@@ -32,10 +32,10 @@ export class AirplaneDetailComponent implements OnInit {
   private readonly airplaneService = inject(AirplaneService);
   private readonly dialog = inject(MatDialog);
 
-  protected readonly airplane = signal<Airplane | undefined>(undefined);
-  protected readonly loading = signal<boolean>(true);
-  protected readonly error = signal<string | null>(null);
-  protected readonly deleting = signal<boolean>(false);
+  airplane = signal<Airplane | undefined>(undefined);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+  deleting = signal<boolean>(false);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
@@ -56,7 +56,7 @@ export class AirplaneDetailComponent implements OnInit {
     }
   }
 
-  protected async onAddFlight(): Promise<void> {
+  async onAddFlight(): Promise<void> {
     const current = this.airplane();
     if (!current || current.status === 'maintenance') return;
 
@@ -64,7 +64,7 @@ export class AirplaneDetailComponent implements OnInit {
     this.airplane.set(updated);
   }
 
-  protected async onDelete(): Promise<void> {
+  async onDelete(): Promise<void> {
     const current = this.airplane();
     if (!current) return;
 

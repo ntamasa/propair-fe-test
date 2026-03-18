@@ -16,10 +16,10 @@ export class AirplaneCreateComponent {
   private readonly airplaneService = inject(AirplaneService);
   private readonly router = inject(Router);
 
-  protected readonly loading = signal<boolean>(false);
-  protected readonly error = signal<string | null>(null);
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
 
-  protected async onFormSubmit(value: AirplaneFormValue): Promise<void> {
+  async onFormSubmit(value: AirplaneFormValue): Promise<void> {
     const status: AirplaneStatus =
       value.flightsSinceLastMaintenance >= value.maintenanceIntervalFlights
         ? 'maintenance'
@@ -38,7 +38,7 @@ export class AirplaneCreateComponent {
     }
   }
 
-  protected onCancel(): void {
+  onCancel(): void {
     this.router.navigate(['/airplanes']);
   }
 }

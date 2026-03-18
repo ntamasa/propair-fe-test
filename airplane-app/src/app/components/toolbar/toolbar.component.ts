@@ -11,9 +11,9 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent {
-  protected readonly authService = inject(AuthService);
+  readonly authService = inject(AuthService);
 
-  protected onLogout(): void {
+  onLogout(): void {
     this.authService.logout();
   }
 }

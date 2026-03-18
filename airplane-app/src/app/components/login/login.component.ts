@@ -23,16 +23,16 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  protected readonly form = this.fb.group({
+  readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
 
-  protected readonly error = signal<string | null>(null);
-  protected readonly loading = signal<boolean>(false);
-  protected readonly passwordVisible = signal<boolean>(false);
+  error = signal<string | null>(null);
+  loading = signal<boolean>(false);
+  passwordVisible = signal<boolean>(false);
 
-  protected async onSubmit(): Promise<void> {
+  async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -54,7 +54,7 @@ export class LoginComponent {
     }
   }
 
-  protected togglePassword(): void {
+  togglePassword(): void {
     this.passwordVisible.update((v) => !v);
   }
 }

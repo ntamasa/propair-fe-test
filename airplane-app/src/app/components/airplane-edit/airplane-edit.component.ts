@@ -23,12 +23,12 @@ export class AirplaneEditComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  protected readonly id = this.route.snapshot.paramMap.get('id') ?? '';
-  protected readonly initialValue = signal<Partial<AirplaneFormValue> | undefined>(undefined);
-  protected readonly loadError = signal<string | null>(null);
-  protected readonly loading = signal<boolean>(true);
-  protected readonly saving = signal<boolean>(false);
-  protected readonly saveError = signal<string | null>(null);
+  id = this.route.snapshot.paramMap.get('id') ?? '';
+  initialValue = signal<Partial<AirplaneFormValue> | undefined>(undefined);
+  loadError = signal<string | null>(null);
+  loading = signal<boolean>(true);
+  saving = signal<boolean>(false);
+  saveError = signal<string | null>(null);
 
   async ngOnInit(): Promise<void> {
     try {
@@ -48,7 +48,7 @@ export class AirplaneEditComponent implements OnInit {
     }
   }
 
-  protected async onFormSubmit(value: AirplaneFormValue): Promise<void> {
+  async onFormSubmit(value: AirplaneFormValue): Promise<void> {
     this.saving.set(true);
     this.saveError.set(null);
 
@@ -62,7 +62,7 @@ export class AirplaneEditComponent implements OnInit {
     }
   }
 
-  protected onCancel(): void {
+  onCancel(): void {
     this.router.navigate(['/airplanes', this.id]);
   }
 }

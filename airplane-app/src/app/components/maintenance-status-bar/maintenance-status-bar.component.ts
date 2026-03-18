@@ -14,23 +14,23 @@ export class MaintenanceStatusBarComponent {
   readonly flightsSinceLastMaintenance = input.required<number>();
   readonly status = input<AirplaneStatus>('active');
 
-  readonly addFlight = output<void>();
+  addFlight = output<void>();
 
-  protected readonly progress = computed<number>(() =>
+  progress = computed<number>(() =>
     Math.min(
       Math.round((this.flightsSinceLastMaintenance() / this.maintenanceIntervalFlights()) * 100),
       100,
     ),
   );
 
-  protected readonly barClass = computed<string>(() => {
+  barClass = computed<string>(() => {
     const pct = this.progress();
     if (pct >= 100) return 'bg-red-500';
     if (pct >= 75) return 'bg-amber-400';
     return 'bg-green-500';
   });
 
-  protected onAddFlight(): void {
+  onAddFlight(): void {
     this.addFlight.emit();
   }
 }

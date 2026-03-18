@@ -15,14 +15,14 @@ export interface ConfirmDialogData {
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
-  protected readonly data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
-  protected readonly dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
+  readonly data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
+  readonly dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
 
-  protected confirm(): void {
+  confirm(): void {
     this.dialogRef.close(true);
   }
 
-  protected cancel(): void {
+  cancel(): void {
     this.dialogRef.close(false);
   }
 }

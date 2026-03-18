@@ -13,13 +13,13 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
-  readonly token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
-  readonly user = signal<AuthUser | null>(
+  token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
+  user = signal<AuthUser | null>(
     localStorage.getItem(USER_KEY)
       ? (JSON.parse(localStorage.getItem(USER_KEY)!) as AuthUser)
       : null,
   );
-  readonly isLoggedIn = computed(() => this.token() !== null);
+  isLoggedIn = computed(() => this.token() !== null);
 
   async login(credentials: LoginRequest): Promise<LoginResponse> {
     return firstValueFrom(this.http.post<LoginResponse>(`${API_BASE}/auth/login`, credentials));
