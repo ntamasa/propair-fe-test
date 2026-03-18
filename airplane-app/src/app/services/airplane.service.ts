@@ -43,4 +43,8 @@ export class AirplaneService {
   getById(id: string): Airplane | undefined {
     return this._airplanes().find((a) => a.id === id);
   }
+
+  updateAirplane(updated: Airplane): void {
+    this._airplanes.update((list) => list.map((a) => (a.id === updated.id ? updated : a)));
+  }
 }

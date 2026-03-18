@@ -43,25 +43,13 @@
             Every {{ airplane()!.maintenanceIntervalFlights }} flights
           </dd>
         </div>
-        <div class="px-6 py-4 grid grid-cols-2 gap-4">
-          <dt class="text-sm text-gray-500">Flights since last service</dt>
-          <dd class="text-sm text-gray-800">{{ airplane()!.flightsSinceLastMaintenance }}</dd>
-        </div>
         <div class="px-6 py-4">
-          <dt class="text-sm text-gray-500 mb-2">Maintenance progress</dt>
-          <dd>
-            <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-              <div
-                class="h-2.5 rounded-full transition-all duration-300"
-                [ngClass]="progressBarClass()"
-                [style.width.%]="maintenanceProgress()"
-              ></div>
-            </div>
-            <p class="text-xs text-gray-400 mt-1">
-              {{ airplane()!.flightsSinceLastMaintenance }} /
-              {{ airplane()!.maintenanceIntervalFlights }} flights ({{ maintenanceProgress() }}%)
-            </p>
-          </dd>
+          <app-maintenance-status-bar
+            [maintenanceIntervalFlights]="airplane()!.maintenanceIntervalFlights"
+            [flightsSinceLastMaintenance]="airplane()!.flightsSinceLastMaintenance"
+            [status]="airplane()!.status"
+            (addFlight)="onAddFlight()"
+          />
         </div>
       </dl>
     </div>
