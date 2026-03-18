@@ -24,10 +24,16 @@
             {{ airplane()!.manufacturer }} · {{ airplane()!.model }}
           </p>
         </div>
-        <a [routerLink]="['/airplanes', airplane()!.id, 'edit']" mat-stroked-button>
-          <mat-icon>edit</mat-icon>
-          Edit
-        </a>
+        <div class="flex gap-2">
+          <a [routerLink]="['/airplanes', airplane()!.id, 'edit']" mat-stroked-button>
+            <mat-icon>edit</mat-icon>
+            Edit
+          </a>
+          <button mat-stroked-button (click)="onDelete()" [disabled]="deleting()">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        </div>
       </div>
 
       <dl class="divide-y divide-gray-100">
