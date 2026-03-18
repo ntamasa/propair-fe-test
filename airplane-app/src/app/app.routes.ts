@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AirplaneListComponent } from './components/airplane-list/airplane-list.component';
 import { AirplaneDetailComponent } from './components/airplane-detail/airplane-detail.component';
 import { AirplaneCreateComponent } from './components/airplane-create/airplane-create.component';
@@ -11,6 +12,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'airplanes',
+    component: ToolbarComponent,
     canActivate: [authGuard],
     children: [
       { path: '', component: AirplaneListComponent },
