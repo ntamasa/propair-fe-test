@@ -39,4 +39,8 @@ export class AirplaneService {
   getAirplanes(): Airplane[] {
     return this._airplanes();
   }
+
+  getById(id: string): Airplane | undefined {
+    return this._airplanes().find((a) => a.id === id);
+  }
 }

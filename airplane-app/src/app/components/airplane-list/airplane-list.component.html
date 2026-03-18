@@ -17,7 +17,10 @@
           </tr>
         }
         @for (airplane of airplanes; track airplane.id) {
-          <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+          <tr
+            [routerLink]="['/airplanes', airplane.id]"
+            class="border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+          >
             <td class="px-6 py-4 font-mono font-medium text-gray-800">
               {{ airplane.tailNumber | tailNumber }}
             </td>
