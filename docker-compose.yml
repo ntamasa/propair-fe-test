@@ -1,0 +1,15 @@
+# Optional: run the airplane API backend with Docker Compose.
+# From project root: docker compose up --build
+# API: http://localhost:3000
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
