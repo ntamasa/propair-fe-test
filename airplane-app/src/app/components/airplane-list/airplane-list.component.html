@@ -19,7 +19,12 @@
         @for (airplane of airplanes; track airplane.id) {
           <tr
             [routerLink]="['/airplanes', airplane.id]"
-            class="border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+            [ngClass]="
+              airplane.status === 'maintenance'
+                ? 'bg-amber-50 text-amber-800 hover:bg-amber-100'
+                : 'hover:bg-gray-50 text-gray-700'
+            "
+            class="border-t border-gray-100 transition-colors cursor-pointer"
           >
             <td class="px-6 py-4 font-mono font-medium text-gray-800">
               {{ airplane.tailNumber | tailNumber }}
